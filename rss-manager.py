@@ -1,4 +1,4 @@
-import teamsconnector # comment out if you are not using Teams
+#import teamsconnector # comment out if you are not using Teams
 import json
 import urllib.request
 from time import sleep
@@ -24,15 +24,14 @@ listofFeeds = getRSSFeed()
 #get latest feed
 rssID = []
 while True:
-    if str(listofFeeds[0]['title']).lower().find("xdr") != -1:
+    if "XDR" in listofFeeds[0]['product']:
         if listofFeeds[0]['ID'] not in rssID:
-            teamsconnector.sendMessage(f"NEW XDR ADVISORY   " + "\n   " + listofFeeds[0]['title'] + "\n   " + "Affected versions:   " + str(listofFeeds[0]['affected'])) # replace with action to take if xdr advisory is found, in this case a teams message is sent
+            print(f"Vulnerability name: {listofFeeds[0]['title']}\nAffected version: {', '.join(filter(None, listofFeeds[0]['affected']))}\nFixed version: {', '.join(filter(None, listofFeeds[0]['fixed']))}")
             rssID.append(listofFeeds[0]['ID'])
-            logging.info("Found XDR in title")
-            logging.info(listofFeeds[0]['title'])
-            logging.info(f"Affected versions {listofFeeds[0]['affected']}")
+            logging.info(f"Found {listofFeeds[0]['title']}")
         else:
             logging.info("Already posted")
+
     #sleep for 2 hours
     logging.info("Sleeping for 2 hours")
     sleep(7200)
